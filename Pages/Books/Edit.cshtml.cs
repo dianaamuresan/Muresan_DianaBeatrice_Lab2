@@ -30,35 +30,22 @@ namespace Muresan_DianaBeatrice_Lab2.Pages.Books
                 return NotFound();
             }
 
-            var book =  await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
+            var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
             if (book == null)
             {
                 return NotFound();
             }
             Book = book;
             ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID",
-           "PublisherName");
-     
+"PublisherName");
+            ViewData["AuthorID"] = new SelectList(_context.Author.Select(a => new {
+                ID = a.ID,
+                FullName = a.FirstName + " " + a.LastName
+            }), "ID", "FullName");
+
             return Page();
         }
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            Book = await _context.Book.FindAsync(id);
-
-            if (Book == null)
-            {
-                return NotFound();
-            }
-
-            // Populate the dropdown list with authors for editing
-            ViewData["AuthorID"] = new SelectList(_context.Set<Authors>(), "ID", "LastName");
-            return Page();
-        }
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()

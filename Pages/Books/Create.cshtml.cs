@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Muresan_DianaBeatrice_Lab2.Data;
 using Muresan_DianaBeatrice_Lab2.Models;
 
@@ -23,9 +24,12 @@ namespace Muresan_DianaBeatrice_Lab2.Pages.Books
         {
             ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID",
  "PublisherName");
-            ViewData["AuthorID"] = new SelectList(_context.Authors, "ID", "FullName");
-            return Page();
+            ViewData["AuthorID"] = new SelectList(_context.Author.Select(a => new {
+                ID = a.ID,
+                FullName = a.FirstName + " " + a.LastName
+            }), "ID", "FullName");
 
+            return Page();
         }
 
         [BindProperty]

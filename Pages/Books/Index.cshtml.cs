@@ -23,8 +23,11 @@ namespace Muresan_DianaBeatrice_Lab2.Pages.Books
 
         public async Task OnGetAsync()
         {
-            Book = await _context.Book.Include(b => b.Publisher).ToListAsync();
-            Book = await _context.Book.Include(b => b.Author).ToListAsync();
+            Book = await _context.Book
+                .Include(b => b.Publisher)
+                .Include(b => b.Author)
+                .ToListAsync();
+            
 
         }
     }
